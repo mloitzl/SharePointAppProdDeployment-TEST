@@ -7,8 +7,8 @@ using System.Web;
 
 namespace SharePointAppProdDeployment_TESTWeb.SignalR
 {
-    [HubName("")]
-    public class NotificationsHub : Hub
+    //[HubName("notificationHub")]
+    public class NotificationsHub : Hub<INotificationsHubClient>
     {
 
         Notifications _notifications = null;
@@ -27,6 +27,11 @@ namespace SharePointAppProdDeployment_TESTWeb.SignalR
             return _notifications.Notifactions;
         }
 
+        public void BroadcastNotification(Notification notification)
+        {
+            _notifications.BroadcastNotification(notification);
+        }
+
         //public void Send(string name, string message)
         //{
         //    Clients.All.broadcastMessage(name, message);
@@ -35,8 +40,10 @@ namespace SharePointAppProdDeployment_TESTWeb.SignalR
 
     public class Notifications
     {
-        private Notifications(IHubConnectionContext<dynamic> clients ) {
+        private Notifications(IHubConnectionContext<dynamic> clients)
+        {
             Clients = clients;
+            this.Notifactions = new List<Notification>();
         }
 
         private readonly static Lazy<Notifications> _instance = new Lazy<Notifications>(() => new Notifications(GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>().Clients));
@@ -45,7 +52,6 @@ namespace SharePointAppProdDeployment_TESTWeb.SignalR
 
         public static Notifications Instance
         {
-
             get
             {
                 return _instance.Value;
@@ -54,7 +60,8 @@ namespace SharePointAppProdDeployment_TESTWeb.SignalR
 
         public void BroadcastNotification(Notification notification)
         {
-            Clients.All.publishNotification(notification);
+            this.Notifactions.Add(notification);
+            Clients.All.BroadcastNotification(notification);
         }
 
         internal List<Notification> Notifactions { get; set; }

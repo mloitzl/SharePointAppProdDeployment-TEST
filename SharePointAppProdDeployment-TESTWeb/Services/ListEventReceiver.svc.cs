@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.EventReceivers;
 using SharePointAppProdDeployment_TESTWeb.Models;
+using SharePointAppProdDeployment_TESTWeb.SignalR;
 
 namespace SharePointAppProdDeployment_TESTWeb.Services
 {
@@ -23,6 +24,16 @@ namespace SharePointAppProdDeployment_TESTWeb.Services
             {
                 db.Log("ProcessEvent Event {0}", properties.EventType.ToString());
             }
+
+            Notifications.Instance.BroadcastNotification(new Notification
+            {
+                Originator = properties.ItemEventProperties.UserDisplayName,
+                Message = string.Format(
+                    "performed Event {0} on List {1} item {2}", 
+                    properties.EventType.ToString(), "'" + properties.ItemEventProperties.ListTitle + "'", 
+                    properties.ItemEventProperties.AfterProperties.ContainsKey("Title") ? 
+                    properties.ItemEventProperties.AfterProperties["Title"] : " with id: " + properties.ItemEventProperties.ListItemId)
+            });
 
             using (ClientContext clientContext = TokenHelper.CreateRemoteEventReceiverClientContext(properties))
             {
