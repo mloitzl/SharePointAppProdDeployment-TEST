@@ -12,6 +12,12 @@ namespace SharePointAppProdDeployment_TESTWeb.Controllers
         [SharePointContextFilter]
         public ActionResult Index()
         {
+
+            foreach (var item in Request.Form)
+            {
+                Console.WriteLine();
+            }
+
             User spUser = null;
 
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);

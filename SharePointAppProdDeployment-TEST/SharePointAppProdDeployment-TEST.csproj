@@ -13,8 +13,8 @@
     <TargetOfficeVersion>15.0</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <MinimumOfficeToolsVersion>11.1</MinimumOfficeToolsVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumOfficeToolsVersion>12.2</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
     <AppFeaturePartId>{f14d1ae0-1a86-4c4a-ac98-3918e2a424e0}</AppFeaturePartId>
@@ -22,6 +22,7 @@
     <WorkflowPartId>{950259a5-892d-4136-bffa-d5712994f15e}</WorkflowPartId>
     <CspkgPartId>{1fc198bb-8c86-489b-9a95-6c83ef39f77b}</CspkgPartId>
     <SqlPackagePartId>{a44a414f-edeb-47d8-b17e-c1f7f0fdf303}</SqlPackagePartId>
+    <ActivePublishProfile>SharePointProdDeployment</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +47,12 @@
     <Content Include="AppIcon.png">
       <OpcRelationship>manifest-icon</OpcRelationship>
     </Content>
+    <Content Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </Content>
+    <Content Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <AppManifestFile Include="AppManifest.xml">
@@ -65,6 +72,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{0a591f85-dd96-48fc-b337-91002041f6fa}</FeatureId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{d984fa87-9f5c-4afa-a26f-d7158f2b7c1d}</PackageId>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

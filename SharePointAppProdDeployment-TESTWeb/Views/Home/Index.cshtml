@@ -8,6 +8,41 @@
     <p><a href="http://dev.office.com" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div>
 <div class="row">
+    <script type="text/javascript">
+        $(function () {
+            // Declare a proxy to reference the hub.
+            var chat = $.connection.notificationHub;
+            // Create a function that the hub can call to broadcast messages.
+            chat.client.broadcastMessage = function (name, message) {
+                // Html encode display name and message.
+                var encodedName = $('<div />').text(name).html();
+                var encodedMsg = $('<div />').text(message).html();
+                // Add the message to the page.
+                $('#discussion').append('<p><strong>' + encodedName
+                    + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</p>');
+            };
+            // Get the user name and store it to prepend to messages.
+            $('#displayname').val(prompt('Enter your name:', ''));
+            // Set initial focus to message input box.
+            $('#message').focus();
+            // Start the connection.
+            $.connection.hub.start().done(function () {
+
+                //    $('#sendmessage').click(function () {
+                //        // Call the Send method on the hub.
+                //        chat.server.send($('#displayname').val(), $('#message').val());
+                //        // Clear text box and reset focus for next comment.
+                //        $('#message').val('').focus();
+                //    });
+                //
+            });
+        });
+    </script>
+    <div class="col-md-12" id="discussion">
+
+    </div>
+</div>
+<div class="row">
     <div class="col-md-4">
         <h2>Overview</h2>
         <p>SharePoint introduces a Cloud App Model that enables you to create apps. Learn what apps for SharePoint are, why you should build them, and the concepts that are fundamental to building them for SharePoint.</p>
